@@ -308,11 +308,13 @@ def main(no_fl: bool = False,
          scale_syn: bool = False,
          threshold: float = 0.5,
          ):
+    """ Main pipeline function. Parameters are copies from the command line arguments found in pipeline/arguments.py. """
     
-    class FakeArgs:
+    # Convert passed prefect arguments to a namespace-like object
+    class ParamsParser:
         def __init__(self, **kwargs):
             self.__dict__.update(kwargs)
-    args = FakeArgs(
+    args = ParamsParser(
         no_fl=no_fl,
         num_clients=num_clients,
         test_size=test_size,

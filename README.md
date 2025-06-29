@@ -2,6 +2,8 @@
 
 A bachelor project focused on implementing and evaluating Federated Learning (FL) techniques for healthcare datasets.
 
+The findings of this research are documented in the paper found at [https://drive.google.com/file/d/12N2VapvAXbFYGQooYz1afIvxX3aKc2-E/view?pli=1](https://drive.google.com/file/d/12N2VapvAXbFYGQooYz1afIvxX3aKc2-E/view?pli=1).
+
 ## Abstract
 Cross-silo federated learning (FL) offers hospitals a way to jointly train predictive models without centralizing sensitive patient data. However, when individual clients possess only few training examples with imbalanced class distributions, standard FedAvg deteriorates dramatically, resorting to majority-class guessing. We examine this phenomenon on two distinct healthcare datasets: MIMIC-III (tabular time series for in-hospital mortality prediction) and a Brain Tumor MRI image set. The datasets are partitioned across eight clients using a beta distribution with concentration parameters $\alpha \in \{0.1, 1, 10, 100, \infty\}$ to simulate a distributed environment with different levels of heterogeneity. We experiment with both large (up to 16,000 ICU stays; 200 MRIs) and small (800 ICU stays; 48 MRIs) training set sizes. We find that the performance of regular FedAvg degrades significantly under especially non-IID conditions, with AUC-ROC scores dropping to 0.62 on MIMIC-III and 0.48 on Brain Tumor under extreme heterogeneity ($\alpha$ = 0.1), and minority-class recall collapsing to near-zero, illustrating how sparse, skewed data cause clients to default toward majority class predictions. To address these challenges, we propose FedAug: each client locally trains a label-conditional generative model to produce synthetic samples for every class, which are then shared via the central server. Under extreme data heterogeneity, FedAug improved AUC-ROC by up to 10 pp. on MIMIC-III and 38 pp. on the Brain Tumor dataset, and increased Average Precision by 10 and 23 pp., respectively, demonstrating its ability to counteract federated models’ bias toward the majority class. Under IID or moderately heterogeneous settings ($\alpha$ ≥ 10), FedAug does not improve performance substantially, indicating that synthetic augmentation is most beneficial when client data are limited and non-IID. We evaluate synthetic sample generalization and find minimal overfitting and memorization, although more extensive evaluations would be needed to ensure that the synthetic samples do not leak any sensitive information about the local datasets. By restoring discriminative power under sub-optimal conditions without undermining privacy, FedAug paves the way for more reliable, privacy-respecting FL in healthcare.
 
@@ -51,6 +53,3 @@ The main dependencies include:
 The ML pipeline can be executed using the `pipeline/main.py` script with various command-line arguments defined in `pipeline/arguments.py`.
 
 See the [pipeline README](pipeline/README.md) for more details.
-
-## Paper
-The findings of this research are documented in the paper found at [https://drive.google.com/file/d/12N2VapvAXbFYGQooYz1afIvxX3aKc2-E/view?pli=1](https://drive.google.com/file/d/12N2VapvAXbFYGQooYz1afIvxX3aKc2-E/view?pli=1).

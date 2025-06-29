@@ -86,3 +86,36 @@ python -um pipeline.main \
     --batch_size 8  \
     --local_ep 5
 ```
+
+## Results
+Results are both stored locally using the Tensorboard `SummaryWriter`, as well as saved to Prefect Cloud as Prefect Artifacts.
+
+### Tensorboard
+For accessing the results in Tensorboard specify a `result_dir` path which will save the results to `pipeline/runs/{result_dir}`.\
+Run `tensorboard --logdir=pipeline/runs/{result_dir}` to open Tensorboard in the browser.
+
+### Prefect Arifacts
+Prefect artifacts are accesed in the Prefect Cloud UI or via the [REST API](https://docs.prefect.io/v3/api-ref/rest-api) or [Prefect Python SDK](https://github.com/PrefectHQ/prefect).\
+Use the SDK for easy code access for further evaluation (add neccesary filters):
+```python
+from prefect.client.orchestration import get_client
+
+async with get_client() as client:
+    result = await client.read_flow_runs()
+```
+
+The following artifacts are stored:
+**Step-wise test metrics**:
+- `pipeline-data-train-accuracy`: Training accuracy metrics
+- `pipeline-data-train-auc`: Training AUC-ROC scores
+- `pipeline-data-train-loss`: Training loss values
+- `pipeline-data-test-accuracy`: Test accuracy metrics
+- `pipeline-data-test-loss`: Test loss values
+- `pipeline-data-test-auc`: Test AUC-ROC scores
+
+**Run-wise evaluations**:
+- `pipeline-data-label-distribution`: Distribution of labels across clients
+- `pipeline-data-test-scores`: Final test metrics
+
+**Run report**:
+- `pipeline-report`: Comprehensive markdown report with embedded visualizations

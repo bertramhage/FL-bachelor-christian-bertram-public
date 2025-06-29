@@ -15,7 +15,7 @@ def get_data(args: Namespace) -> tuple[np.ndarray, np.ndarray, Namespace]:
 
     Args:
         args (Namespace): Arguments:
-            - mimiciii_path (str): Path to the MIMIC-III dataset.
+            - dataset_path (str): Path to the MIMIC-III dataset.
             - gcp_credentials (str): Path to GCP credentials file.
             - outlier_strategy (str | list[str]): Strategy for outlier removal.
     
@@ -28,7 +28,10 @@ def get_data(args: Namespace) -> tuple[np.ndarray, np.ndarray, Namespace]:
                 - n_features (int): Number of features.
                 - n_classes (int): Number of classes.
     """
-    X, y = _get_mimic_data(args.mimiciii_path, args.gcp_credentials, args.outlier_strategy)
+    path = args.dataset_path or 'gs://fl-bachelor/mimiciii/in-hospital-mortality.parquet'
+    cred = args.gcp_credentials or 'assets/credentials/bachelor-453811-676473e4370b.json'
+
+    X, y = _get_mimic_data(path, cred, args.outlier_strategy)
     args.features = (1,2) # start dim, end dim
     args.n_features = 76
     args.n_classes = 2

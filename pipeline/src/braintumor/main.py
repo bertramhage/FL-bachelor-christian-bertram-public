@@ -12,6 +12,7 @@ def get_data(args: Namespace) -> tuple[np.ndarray, np.ndarray, Namespace]:
     Args:
         args (Namespace): Arguments:
             - img_size (int): Size to which images will be resized.
+            - dataset_path (str): Path to the dataset folder containing 'yes' and 'no' subfolders.
 
     Returns:
         tuple: A tuple containing:
@@ -29,8 +30,8 @@ def get_data(args: Namespace) -> tuple[np.ndarray, np.ndarray, Namespace]:
     return X, y, args
     
 def _get_braintumor_data(args: Namespace):
-    data_path = os.path.abspath(os.path.join(os.path.dirname(__file__),'..','..', '..', 'data', 'brain_tumor_dataset'))
-    X, y = load_images(data_path, image_size=args.img_size)
+    path = args.dataset_path or 'data/brain_tumor_dataset'
+    X, y = load_images(path, image_size=args.img_size)
     return X, y
 
 def normalize_data(X_tensor: Tensor, args: Namespace) -> Tensor:

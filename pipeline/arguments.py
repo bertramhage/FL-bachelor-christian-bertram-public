@@ -16,6 +16,7 @@ def add_arguments(parser: ArgumentParser) -> ArgumentParser:
     
     # -- Common data args
     parser.add_argument('--dataset', type=str, default='syntehetic', help="choose which data to use: synthetic or BrainTumor or MIMIC3")
+    parser.add_argument('--dataset_path', type=str, default=None, help="path to preprocessed dataset. If None, use the default path.")
     parser.add_argument('--total_samples', type=int, default=None, help="total number of samples in the train set for CL")
     parser.add_argument('--overwrite_cache', action='store_true', default=False, help="overwrite cache")
     parser.add_argument('--result_dir', type=str, default='results', help="directory to save results")
@@ -24,8 +25,7 @@ def add_arguments(parser: ArgumentParser) -> ArgumentParser:
     parser.add_argument('--ir', type=float, default=None, help="imbalance ratio. must be above 1.0")
     
     # -- MIMIC-III data args
-    parser.add_argument('--mimiciii_path', type=str, default='gs://fl-bachelor/mimiciii/in-hospital-mortality.parquet', help="path to preprocessed MIMIC-III data")
-    parser.add_argument('--gcp_credentials', type=str, default='assets/credentials/bachelor-453811-676473e4370b.json', help="path to GCP credentials")
+    parser.add_argument('--gcp_credentials', type=str, default=None, help="path to GCP credentials")
     parser.add_argument('--remove_outliers', action='store_true', default=False, help="Apply all outlier strategies")
 
     # -- BrainTumor data args
